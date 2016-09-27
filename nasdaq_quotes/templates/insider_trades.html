@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}"{{ ticker|upper }}" Insider Trades{% endblock %}
+{% block content -%}
+    <h1>"{{ ticker|upper }}" Insider Trades</h1>
+    <div class="table-responsive">
+    <table class="table table-striped" style="background-color: gainsboro;">
+        <thead>
+        <tr>
+            <th>insider_name</th>
+            <th>relation</th>
+            <th>last_date</th>
+            <th>transaction_type</th>
+            <th>owner_type</th>
+            <th>shares_traded</th>
+            <th>last_price</th>
+            <th>shares_held</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in trades %}
+        <tr>
+            <td><a href="{{ url_for('.insider_trades', ticker=ticker, insider_id=row.insider_id) }}">{{ row.insider_name }}</a></td>
+            <td>{{ row.relation  }}</td>
+            <td>{{ row.last_date }}</td>
+            <td>{{ row.transaction_type }}</td>
+            <td>{{ row.owner_type  }}</td>
+            <td>{{ row.shares_traded  }}</td>
+            <td>{{ row.last_price  }}</td>
+            <td>{{ row.shares_held  }}</td>
+        </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{%- endblock content %}

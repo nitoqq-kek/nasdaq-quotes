@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}"{{ ticker|upper }}" quotes{% endblock %}
+
+{% block content -%}
+    <form method="GET" action="{{ url_for('.analytics', ticker=ticker) }}" style="width:600px;">
+        {{ wtf.quick_form(form, form_type = "horizontal") }}
+    </form>
+    <div style="clear: both"></div>
+    {% if diff %}
+    <h1>"{{ ticker|upper }}". Diff between costs of stocks  at {{ start.date }} and {{ end.date }}</h1>
+    <div class="table-responsive">
+    <table class="table table-striped" style="background-color: gainsboro;">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Close</th>
+            <th>Open</th>
+            <th>High</th>
+            <th>Low</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ ticker }}</td>
+            <td>{{ diff.close  }}</td>
+            <td>{{ diff.open }}</td>
+            <td>{{ diff.high }}</td>
+            <td>{{ diff.low  }}</td>
+        </tr>
+
+        </tbody>
+    </table>
+    {% endif %}
+{%- endblock content %}

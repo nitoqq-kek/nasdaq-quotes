@@ -1,0 +1,20 @@
+{% extends "bootstrap/base.html" %}
+{% block navbar -%}
+    <nav class="navbar navbar-default " role="navigation">
+    <ul class="nav navbar-nav">
+        {% with endpoint = request.url_rule.endpoint %}
+        <li {% if endpoint == 'site.index' %}class="active"{% endif %}><a href="{{ url_for('.index') }}">Home</a></li>
+            {% if ticker %}
+                {% for ep, title in [
+                 ('site.ticker', ticker),
+                 ('site.insider_trades', 'Insider Trades'),
+                 ('site.analytics', 'Analytics'),
+                 ('site.delta', 'Delta')
+                 ] %}
+                <li {% if endpoint == ep %}class="active"{% endif %}><a href="{{ url_for(ep, ticker=ticker) }}">{{ title }}</a></li>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </ul>
+    </nav>
+{% endblock %}

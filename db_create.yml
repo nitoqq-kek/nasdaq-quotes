@@ -1,0 +1,52 @@
+---
+
+- hosts: all
+  become: yes
+  gather_facts: no
+
+  tasks:
+  - name: Ensure bash, OpenSSl, and libssl are the latest versions
+    apt: name={{ item }} state=latest
+    with_items:
+      - bash
+      - openssl
+      - libssl-dev
+      - libssl-doc
+    tags: packages
+
+  - name: Install PostgreSQL
+    apt: name={{ item }} state=installed
+    with_items:
+      - postgresql
+      - postgresql-contrib
+      - libpq-dev
+      - python-psycopg2
+    tags: packages
+
+  - name: Ensure the PostgreSQL service is running
+    service: name=postgresql state=started enabled=yes
+
+- hosts: all
+  become: yes
+  become_user: postgres
+  gather_facts: no
+
+  vars:
+    db_user: nasdaq-quotes
+    db_name: nasdaq_quotes
+    db_password: hodorhodor
+
+    update_apt_cache: true
+
+  tasks:
+  - name: ensure database is created
+    postgresql_db: name={{db_name}}
+
+  - name: ensure user has access to database
+    postgresql_user: db={{db_name}} name={{db_user}} password={{db_password}} priv=ALL
+
+  - name: ensure user does not have unnecessary privilege
+    postgresql_user: name={{db_user}} role_attr_flags=NOSUPERUSER,NOCREATEDB
+
+  - name: ensure no other user can access the database
+    postgresql_privs: db={{db_name}} role=PUBLIC type=database priv=ALL state=absent

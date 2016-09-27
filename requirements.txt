@@ -1,0 +1,10 @@
+Flask
+requests
+flask-sqlalchemy
+psycopg2
+Flask-WTF
+flask-jsontools
+flask-migrate
+flask-bootstrap
+scrapy
+futures

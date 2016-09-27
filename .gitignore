@@ -1,0 +1,4 @@
+*.pyc
+*.mo
+nasdaq_quotes.egg-info
+

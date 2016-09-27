@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}"{{ ticker|upper }}" quotes{% endblock %}
+{% block content -%}
+    <form method="GET" action="{{ url_for('.delta', ticker=ticker) }}" style="width:600px;">
+        {{ wtf.quick_form(form, form_type = "horizontal") }}
+    </form>
+    <div style="clear: both"></div>
+    {% if delta %}
+    <h1>"{{ ticker|upper }}". Minimal period of cost changing within selected value</h1>
+    <div class="table-responsive">
+    <table class="table table-striped" style="background-color: gainsboro;">
+        <thead>
+        <tr>
+            <th>Date from</th>
+            <th>Date to</th>
+            <th>Difference</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ delta.date_from }}</td>
+            <td>{{ delta.date_to  }}</td>
+            <td>{{ delta.diff }}</td>
+        </tr>
+
+        </tbody>
+    </table>
+    {% endif %}
+{%- endblock content %}
